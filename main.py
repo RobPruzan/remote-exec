@@ -123,7 +123,8 @@ def run_code():
 
     with open(filename, "w") as file:
         file.write(languages[lang]["env_code"] + code + languages[lang]["call_code"])
-
+    stderr = ""
+    stdout = ""
     try:
         interpreter = languages[lang]["interpreter"]
         if lang in ["c", "c++", "rust"]:
@@ -157,7 +158,7 @@ def run_code():
         output = stdout if not stderr else stderr
     except Exception as e:
         output = str(e)
-        # print("caught exception, here it is:", output)
+        print("caught exception, here it is:", output)
     if stderr:
         print("returning err")
         return jsonify({"output": [stderr], "type": "error"})
