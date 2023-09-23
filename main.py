@@ -1,14 +1,3 @@
-# from flask import Flask, jsonify
-# import os
-
-# app = Flask(__name__)
-
-
-# @app.route('/')
-# def index():
-#     return jsonify({"Choo Choo": "Welcome to your Flask app 🚅"})
-
-
 import json
 import sys
 from flask import Flask, request, jsonify, make_response
@@ -96,11 +85,6 @@ def add_cors_headers(response):
     return response
 
 
-@app.route("/", methods=["GET", "OPTIONS"])
-def test():
-    return {"from_test": "hello!"}
-
-
 @app.route("/run", methods=["POST", "OPTIONS"])
 def run_code():
     if request.method == "OPTIONS":
@@ -110,12 +94,6 @@ def run_code():
     code = data.get("code")
     code = code.replace(": NodeID", "") if lang != "typescript" else code
     env = data.get("env")
-    print(
-        "recieved",
-        code,
-    )
-    # print("fo sho runniiing")
-    # print(data, lang, code, env)
 
     if lang not in languages:
         return jsonify({"error": "Unsupported language"}), 400
@@ -130,7 +108,6 @@ def run_code():
     try:
         interpreter = languages[lang]["interpreter"]
         if lang in ["c", "c++", "rust"]:
-            # For compiled languages, we need to compile first, then execute
             compile_command = f"{interpreter} {filename} -o {filename}.out"
             subprocess.run(shlex.split(compile_command), check=True)
             run_command = f"./{filename}.out"
@@ -143,8 +120,6 @@ def run_code():
             )
         else:
             run_command = f"{interpreter} {filename}"
-
-        # print("the code", code)
 
         result = subprocess.run(
             shlex.split(run_command),
@@ -160,15 +135,12 @@ def run_code():
         output = stdout if not stderr else stderr
     except Exception as e:
         output = str(e)
-        print("caught exception, here it is:", output)
+        print("caught exception:", output)
     if stderr:
-        print("returning err")
         return jsonify({"output": [stderr], "type": "error"})
     logs, out = parse_output(output)
-    # print("before parsing", out)
     out = json.loads(json.loads(out))
     out = out if out is not None else []
-    # print("typof", type(out))
 
     logs = logs if logs else ""
 
