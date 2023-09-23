@@ -1,1 +1,1 @@
-Light-weight remote execution library for python, javascript, typescript and java
+Light-weight remote execution server for python, javascript, typescript and java
