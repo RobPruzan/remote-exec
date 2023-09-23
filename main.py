@@ -10,6 +10,7 @@
 
 
 import json
+import sys
 from flask import Flask, request, jsonify, make_response
 import subprocess
 import shlex
@@ -34,9 +35,10 @@ def parse_output(out: str):
     return pre[0], post[0]
 
 
+python_executable = sys.executable
 languages = {
     "python": {
-        "interpreter": "python",
+        "interpreter": python_executable,
         "extension": ".py",
         "env_code": 'import os, json\nadjacencyList = json.loads(os.getenv("ADJACENCY_LIST", "[]"))\n',
         "call_code": "\nout = json.dumps(algorithm(adjacencyList))"
