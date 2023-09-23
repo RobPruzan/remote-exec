@@ -36,7 +36,7 @@ def parse_output(out: str):
 
 languages = {
     "python": {
-        "interpreter": "python3",
+        "interpreter": "python",
         "extension": ".py",
         "env_code": 'import os, json\nadjacencyList = json.loads(os.getenv("ADJACENCY_LIST", "[]"))\n',
         "call_code": "\nout = json.dumps(algorithm(adjacencyList))"
