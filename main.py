@@ -29,8 +29,8 @@ languages = {
     "python": {
         "interpreter": python_executable,
         "extension": ".py",
-        "env_code": 'import os, json\nadjacencyList = json.loads(os.getenv("ADJACENCY_LIST", "[]"))\n',
-        "call_code": "\nout = json.dumps(algorithm(adjacencyList))"
+        "env_code": 'import os, json\nadjacencyList = json.loads(os.getenv("ADJACENCY_LIST", "[]"))\nstart_node = json.loads(os.getenv("START_NODE"))\n',
+        "call_code": "\nout = json.dumps(algorithm(adjacencyList, start_node))"
         + "\n"
         + f"print('{parse_var}')"
         + "\n"
@@ -123,7 +123,7 @@ def run_code():
 
         result = subprocess.run(
             shlex.split(run_command),
-            timeout=2,
+            timeout=1,
             capture_output=True,
             env=env,
         )
