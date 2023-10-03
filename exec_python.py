@@ -48,8 +48,16 @@ adjacencyList = {
     _node(node): [Node(n, v) for n, v in neighbors]
     for node, neighbors in json.loads(os.getenv("ADJACENCY_LIST", "[]")).items()
 }
-
-start_node = Node(
-    ID=json.loads(os.getenv("START_NODE")),
-    value=json.loads(os.getenv("START_NODE_VALUE")),
+has_start_node = (
+    True
+    if bool(os.getenv("START_NODE")) and bool(os.getenv("START_NODE_VALUE"))
+    else False
+)
+start_node = (
+    Node(
+        ID=json.loads(os.getenv("START_NODE")),
+        value=json.loads(os.getenv("START_NODE_VALUE")),
+    )
+    if has_start_node
+    else "NO-START-NODE-SELECTED"
 )
